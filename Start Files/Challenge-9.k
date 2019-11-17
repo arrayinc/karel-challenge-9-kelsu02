@@ -12,7 +12,7 @@ marked by each beeper. Those houses, moreover, need to be raised on stilts
 to avoid damage from the next storm.
 
 At the end of the run, Karel should be at the east end of the street,
-having created a set of houses.
+having created a set of houses. 
 
 In solving this problem, you can count on the following facts about the world:
 
@@ -27,3 +27,74 @@ or hitting walls.
  Karel should not run into a wall if it builds a house that extends into
  that final corner.
 */
+
+import "turns";
+
+function moveToWall() {
+	while (frontIsClear()) {
+		move();
+	}
+}
+
+function moveBeeper() {
+	move();
+	putBeeper();
+}	
+
+function houseWall() {
+	turnRight();
+	moveBeeper();
+	moveBeeper();
+}
+
+function rightBeeper() {
+	turnRight();
+	moveBeeper();
+}
+
+function leftMove() {
+	turnLeft();
+	move();
+}
+
+
+function house() {
+	if(beepersPresent()) {
+		pickBeeper();
+		turnAround();
+		move();
+		moveBeeper();
+		houseWall();
+		houseWall();
+		rightBeeper();
+		rightBeeper();
+		leftMove();
+		leftMove();
+		if (frontIsClear()){
+			putBeeper();
+			move();
+		}
+	}
+}
+
+function buildHouse() {
+	while (beepersPresent()) {
+		house();
+	}
+}
+
+function moveHouse() {
+	while (noBeepersPresent()) {
+		if (frontIsClear()) {
+			move();
+		}
+	}
+}
+
+
+function Solve() {
+	while (frontIsClear()) {
+		moveHouse();
+		buildHouse();
+	}
+}
