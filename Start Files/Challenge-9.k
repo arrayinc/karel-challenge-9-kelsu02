@@ -41,46 +41,76 @@ function moveBeeper() {
 	putBeeper();
 }	
 
-function houseWall() {
-	turnRight();
-	moveBeeper();
-	moveBeeper();
+function turnEast() {
+	while (notFacingEast()) {
+		turnLeft();
+	}
 }
 
-function rightBeeper() {
-	turnRight();
-	moveBeeper();
+function turnWest() {
+	while (notFacingWest()) {
+		turnRight();
+	}
 }
 
-function leftMove() {
-	turnLeft();
+function turnNorth() {
+	while (notFacingNorth()) {
+		turnLeft();
+	}
+}
+
+function turnSouth() {
+	while (notFacingSouth()) {
+		turnLeft();
+	}
+}
+
+function westWall() {
+	turnWest();
+	move();
+	turnNorth();
+	putBeeper();
+	while (frontIsClear()) {
+		moveBeeper();
+	}
+	turnAround();
+	pickBeeper();
+	move();
+	pickBeeper();
 	move();
 }
 
-
-function house() {
-	if(beepersPresent()) {
-		pickBeeper();
-		turnAround();
+function eastWall() {
+	turnEast();
+	while (beepersPresent()) {
 		move();
+	}
+	turnSouth();
+	putBeeper();
+	while (frontIsClear()) {
 		moveBeeper();
-		houseWall();
-		houseWall();
-		rightBeeper();
-		rightBeeper();
-		leftMove();
-		leftMove();
-		if (frontIsClear()){
-			putBeeper();
-			move();
-		}
+	}
+	if (leftIsClear()) {
+		turnEast();
+		move();
 	}
 }
 
-function buildHouse() {
-	while (beepersPresent()) {
-		house();
+function houseCenter(){
+	pickBeeper();
+	turnNorth();
+	moveToWall();
+	turnAround();
+	while (frontIsClear()) {
+		moveBeeper();
 	}
+	pickBeeper();
+}
+
+function buildHouse() {
+		houseCenter();
+		westWall();
+		eastWall();
 }
 
 function moveHouse() {
@@ -93,8 +123,9 @@ function moveHouse() {
 
 
 function Solve() {
-	while (frontIsClear()) {
+	while (facingEast()) {
 		moveHouse();
-		buildHouse();
+		buildHouse();	
 	}
-}
+	turnEast();
+} 
